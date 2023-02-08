@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "willer-helm.name" -}}
+{{- define "app-willer.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "willer-helm.fullname" -}}
+{{- define "app-willer.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "willer-helm.chart" -}}
+{{- define "app-willer.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "willer-helm.labels" -}}
-helm.sh/chart: {{ include "willer-helm.chart" . }}
-{{ include "willer-helm.selectorLabels" . }}
+{{- define "app-willer.labels" -}}
+helm.sh/chart: {{ include "app-willer.chart" . }}
+{{ include "app-willer.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "willer-helm.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "willer-helm.name" . }}
+{{- define "app-willer.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "app-willer.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "willer-helm.serviceAccountName" -}}
+{{- define "app-willer.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "willer-helm.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "app-willer.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
